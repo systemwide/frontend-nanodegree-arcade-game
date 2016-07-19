@@ -1,12 +1,23 @@
 
 //utility variables used by Player class
-var player_startPos_x = 252;
-var player_startPos_y = 590;
+var player_startPos_x = 200;
+var player_startPos_y = 435;
+var player_max_x = 415;
+var player_min_x = -10;
+var lives = 3;
 
 
 // utility variables used by Enemy class
-var numEnemies = 4;
+var numEnemies = 5;
+var enemySpeedBoost = 10;
 var allEnemies = [];
+var enemyXMax = 450;
+var enemyXMin = -100;
+var enemyYMax = 350;
+var enemyYMin = 125;
+
+
+
 // Enemies our player must avoid
 
 var Enemy = function() {
@@ -15,9 +26,12 @@ var Enemy = function() {
 
     // The image/sprite for our enemies, this uses
     // a helper we've provided to easily load images
-    this.x = 25;
-    this.y = 200;
+    this.x = this.xStartPosition();
+    this.y = this.yStartPosition();
+    this.width = 27;
+    this.height = 13;
     this.sprite = 'images/enemy-bug.png';
+    this.speed = this.enemyRandomSpeed();
 };
 
 // Update the enemy's position, required method for game
@@ -26,6 +40,21 @@ Enemy.prototype.update = function(dt) {
     // You should multiply any movement by the dt parameter
     // which will ensure the game runs at the same speed for
     // all computers.
+    this.x = this.x + (this.speed * dt);
+  
+  // check to see if enemy is off edge of canvas
+  // player class is responsbile for collision detection
+
+  if (this.x >= 500) {
+    this.reset();
+  }
+};
+
+Enemy.prototype.reset = function() {
+    this.x = -100;
+    this.y = this.yStartPosition();
+    this.speed = this.enemyRandomSpeed();
+
 };
 
 // Draw the enemy on the screen, required method for game
@@ -33,35 +62,118 @@ Enemy.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 };
 
+// function to determine enemy speed. Increases as score increases.
+Enemy.prototype.enemyRandomSpeed = function() {
+
+    var max = 115 + enemySpeedBoost;
+    var min = 15 + enemySpeedBoost;
+
+    return Math.floor(Math.random(max, min) * (max - min +1)) + min;
+};
+
+// function to determine enemy x start position
+Enemy.prototype.xStartPosition = function() {
+
+    return Math.floor(Math.random() * enemyXMax - enemyXMin + 1) + enemyXMin;
+};
+
+// function to determine enemy y start position
+Enemy.prototype.yStartPosition = function() {
+
+    return Math.floor(Math.random() * enemyYMax - enemyYMin + 1) + enemyYMin;
+};
+
 // Now write your own player class
 // This class requires an update(), render() and
 // a handleInput() method.
+
+// ********************************************************************************************
+// My Player constructor and supporting functions
+// ********************************************************************************************
+
 var Player = function() {
     this.x = player_startPos_x;
     this.y = player_startPos_y;
+    this.width = 13;
+    this.height = 20;
     this.sprite = 'images/char-boy.png';
+    this.lives = lives;
+};
 
-}
+Player.prototype.detectCollision = function () {
+    var collisionBool = false;
+// loop through allEnemies to check for collision with player
+    for(var i = 0; i < allEnemies.length; i++) {
+        if(this.x < allEnemies[i].x + allEnemies[i].width && this.x + this.width > allEnemies[i].x &&
+            this.y < allEnemies[i].y + allEnemies[i].height && this.y + this.height > allEnemies[i].y)
+            collisionBool = true;
+    }
+    return collisionBool;
+};
 
-Player.prototype.update = function() {
-    this.reset;
 
-}
+// keep player from "falling off" the game board
+Player.prototype.keepOnScreen = function(){
+    if(this.x < player_min_x) {
+        this.x = player_min_x;
+    }
 
+    if(this.x > player_max_x) {
+        this.x = player_max_x;
+    }
+
+    if(this.y > player_startPos_y) {
+        this.y = player_startPos_y;
+    }
+
+};
+
+// reset player sprite to start position if killed or successful
 Player.prototype.reset = function() {
     this.x = player_startPos_x;
     this.y = player_startPos_y;
-}
+};
 
-Player.prototype.statusCheck = function() {
+
+
+// update status of player sprite
+Player.prototype.update = function() {
+    
+
     if(this.y < 0) {
-        this.reset;
+        this.reset();
+        this.lives++;
+        enemySpeedBoost = enemySpeedBoost + 10;
+
     }
-}
+
+    if(this.detectCollision()) {
+        this.reset();
+        this.lives--;
+        enemySpeedBoost = enemySpeedBoost - 10;
+    }
+    
+    this.keepOnScreen();
+};
 
 
 Player.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
+    ctx.clearRect(15, 25, 100, 25);
+    ctx.font = "24px Arial";
+    ctx.fillText("Lives: " + this.lives, 15, 45);
+};
+
+Player.prototype.handleInput = function (arrowKey) {
+  if (arrowKey === 'up') { 
+    this.y = this.y - 65;
+        if (this.y < 80) {
+            player.reset;
+        }
+    }
+  if (arrowKey === 'down') { this.y = this.y + 61; }
+  if (arrowKey === 'left') { this.x = this.x - 51; }
+  if (arrowKey === 'right') { this.x = this.x + 51; }
 };
 
 // Now instantiate your objects.
@@ -69,7 +181,7 @@ Player.prototype.render = function() {
 // Place the player object in a variable called player
 for (i = 0; i < numEnemies; i++) {
   allEnemies.push(new Enemy(i));
-}
+};
 
 var player = new Player();
 
