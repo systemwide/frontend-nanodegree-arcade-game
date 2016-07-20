@@ -28,8 +28,8 @@ var Enemy = function() {
     // a helper we've provided to easily load images
     this.x = this.xStartPosition();
     this.y = this.yStartPosition();
-    this.width = 27;
-    this.height = 13;
+    this.width = 75;
+    this.height = 40;
     this.sprite = 'images/enemy-bug.png';
     this.speed = this.enemyRandomSpeed();
 };
@@ -94,8 +94,8 @@ Enemy.prototype.yStartPosition = function() {
 var Player = function() {
     this.x = player_startPos_x;
     this.y = player_startPos_y;
-    this.width = 13;
-    this.height = 20;
+    this.width = 35;
+    this.height = 55;
     this.sprite = 'images/char-boy.png';
     this.lives = lives;
 };

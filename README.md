@@ -1,6 +1,18 @@
-frontend-nanodegree-arcade-game
-===============================
+*** Frontend-Nanodegree-Arcade-Game Submission
 
-Students should use this [rubric](https://www.udacity.com/course/viewer/#!/c-nd001/l-2696458597/m-2687128535) for self-checking their submission.
+This is my submission for P3 of the Front End Nano Degree
 
-For detailed instructions on how to get started, check out this [guide](https://docs.google.com/document/d/1v01aScPjSWCCWQLIpFqvg3-vXLH2e8_SZQKC8jNO0Dc/pub?embedded=true).
+** How to run the game
+
+You can download the files in this repository and then open the index.html file with your web browser.
+
+* Rules
+
+Start with 3 lives.
+
+Make it to the water, add a life.
+
+Get hit by a bug, lose a life.
+
+The more lives you have, the faster the new bugs will move.
+
