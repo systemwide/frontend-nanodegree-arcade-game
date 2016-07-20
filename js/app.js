@@ -50,6 +50,8 @@ Enemy.prototype.update = function(dt) {
   }
 };
 
+
+// reset enemy positions
 Enemy.prototype.reset = function() {
     this.x = -100;
     this.y = this.yStartPosition();
@@ -100,6 +102,10 @@ var Player = function() {
     this.lives = lives;
 };
 
+
+// This is the collision detection function - algorithm adapted from the 2d Bounded Box section of
+// http://blog.sklambert.com/html5-canvas-game-2d-collision-detection/
+
 Player.prototype.detectCollision = function () {
     var collisionBool = false;
 // loop through allEnemies to check for collision with player
@@ -139,7 +145,6 @@ Player.prototype.reset = function() {
 // update status of player sprite
 Player.prototype.update = function() {
     
-
     if(this.y < 0) {
         this.reset();
         this.lives++;
@@ -156,7 +161,7 @@ Player.prototype.update = function() {
     this.keepOnScreen();
 };
 
-
+// Added text to render function - clearRect removes old text each time function is called
 Player.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
     ctx.clearRect(15, 25, 100, 25);
@@ -164,6 +169,8 @@ Player.prototype.render = function() {
     ctx.fillText("Lives: " + this.lives, 15, 45);
 };
 
+
+// input handling adapted from various posts on the FEND forums
 Player.prototype.handleInput = function (arrowKey) {
   if (arrowKey === 'up') { 
     this.y = this.y - 65;
