@@ -10,6 +10,8 @@ You can download the files in this repository and then open the index.html file 
 
 Start with 3 lives.
 
+Use the arrow keys (up, down, left, right) to move around the board and dodge bugs.
+
 Make it to the water, add a life.
 
 Get hit by a bug, lose a life.

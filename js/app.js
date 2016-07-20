@@ -1,7 +1,9 @@
 
+'use strict';
+
 //utility variables used by Player class
-var player_startPos_x = 200;
-var player_startPos_y = 435;
+var PLAYER_STARTPOS_X = 200;
+var PLAYER_STARTPOS_Y = 435;
 var player_max_x = 415;
 var player_min_x = -10;
 var lives = 3;
@@ -94,8 +96,8 @@ Enemy.prototype.yStartPosition = function() {
 // ********************************************************************************************
 
 var Player = function() {
-    this.x = player_startPos_x;
-    this.y = player_startPos_y;
+    this.x = PLAYER_STARTPOS_X;
+    this.y = PLAYER_STARTPOS_Y;
     this.width = 35;
     this.height = 55;
     this.sprite = 'images/char-boy.png';
@@ -108,8 +110,9 @@ var Player = function() {
 
 Player.prototype.detectCollision = function () {
     var collisionBool = false;
+    var len = allEnemies.length;
 // loop through allEnemies to check for collision with player
-    for(var i = 0; i < allEnemies.length; i++) {
+    for(var i = 0; i < len; i++) {
         if(this.x < allEnemies[i].x + allEnemies[i].width && this.x + this.width > allEnemies[i].x &&
             this.y < allEnemies[i].y + allEnemies[i].height && this.y + this.height > allEnemies[i].y)
             collisionBool = true;
@@ -128,16 +131,16 @@ Player.prototype.keepOnScreen = function(){
         this.x = player_max_x;
     }
 
-    if(this.y > player_startPos_y) {
-        this.y = player_startPos_y;
+    if(this.y > PLAYER_STARTPOS_Y) {
+        this.y = PLAYER_STARTPOS_Y;
     }
 
 };
 
 // reset player sprite to start position if killed or successful
 Player.prototype.reset = function() {
-    this.x = player_startPos_x;
-    this.y = player_startPos_y;
+    this.x = PLAYER_STARTPOS_X;
+    this.y = PLAYER_STARTPOS_Y;
 };
 
 
@@ -175,7 +178,7 @@ Player.prototype.handleInput = function (arrowKey) {
   if (arrowKey === 'up') { 
     this.y = this.y - 65;
         if (this.y < 80) {
-            player.reset;
+            this.reset;
         }
     }
   if (arrowKey === 'down') { this.y = this.y + 61; }
@@ -186,7 +189,7 @@ Player.prototype.handleInput = function (arrowKey) {
 // Now instantiate your objects.
 // Place all enemy objects in an array called allEnemies
 // Place the player object in a variable called player
-for (i = 0; i < numEnemies; i++) {
+for (var i = 0; i < numEnemies; i++) {
   allEnemies.push(new Enemy(i));
 };
 
