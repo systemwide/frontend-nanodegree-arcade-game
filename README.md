@@ -1,4 +1,4 @@
-###Frontend-Nanodegree-Arcade-Game Submission
+#Frontend-Nanodegree-Arcade-Game Submission
 
 This is my submission for P3 of the Front End Nano Degree
 
@@ -6,7 +6,7 @@ This is my submission for P3 of the Front End Nano Degree
 
 You can download the files in this repository and then open the index.html file with your web browser.
 
-#Rules
+##Rules
 
 Start with 3 lives.
 
